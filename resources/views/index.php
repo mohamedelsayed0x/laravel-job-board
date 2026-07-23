@@ -1,9 +1,10 @@
 <?php
 //
 
+// declare(strict_types=1); // strict requirement
 
-$infint = PHP_FLOAT_MAX + PHP_FLOAT_MAX;
-
-var_dump(is_infinite($infint));
-
-//bool(false)
+function addNumbers(float $a, float $b): int
+{
+  return (int)($a + $b);
+}
+var_dump(addNumbers(1.2, 5.2));

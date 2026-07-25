@@ -19,7 +19,7 @@ class JobController extends Controller
     {
         return view('jobs.create');
     }
-    public function Store()
+    public function store()
     {
         request()->validate([
             'title' => ['required', 'min:3'],
@@ -46,20 +46,20 @@ class JobController extends Controller
             'job' => $job,
         ]);
     }
+
     public function update(Job $job)
-    {  // Validation
-        request()->validate([
+    {
+        $attributes = request()->validate([
             'title' => ['required', 'min:3'],
-            'salary' => ['required']
+            'salary' => ['required'],
         ]);
-        // authorize (on hold ...)
-        $job->update([
-            'title' => request('title'),
-            'salary' => request('salary')
-        ]);
+
+        $job->update($attributes);
 
         return redirect('/jobs/' . $job->id);
     }
+
+
     public function destroy(Job $job)
     {  // authorize (on hold ...)
         $job->delete();

@@ -7,21 +7,31 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Job;
 use App\Models\User;
+use App\Mail\JobPosted;
+use Illuminate\Support\Facades\Mail;
 
 class JobController extends Controller
 {
     public function index()
     {
-        $jobs = Job::with('employer')->cursorPaginate(6);
+        $jobs = Job::with('employer')
+            ->latest('id')
+            ->cursorPaginate(6);
+
         return view('jobs.index', [
             'jobs' => $jobs,
         ]);
     }
 
+    // ================================================
+
     public function create()
     {
         return view('jobs.create');
     }
+
+    // ================================================
+
     public function store()
     {
         request()->validate([
@@ -29,14 +39,22 @@ class JobController extends Controller
             'salary' => ['required']
         ]);
 
-        Job::create([
+        $job = Job::create([
             'title' => request('title'),
             'salary' => request('salary'),
             'employer_id' => 1,
         ]);
 
+
+        Mail::to($job->employer->user)->send(
+            new JobPosted($job)
+        );
+
         return redirect('/jobs');
     }
+
+    // ================================================
+
     public function show(Job $job)
     {
         return view('jobs.show', [
@@ -50,6 +68,8 @@ class JobController extends Controller
         ]);
     }
 
+    // ================================================
+
     public function update(Job $job)
     {
         $attributes = request()->validate([
@@ -61,6 +81,8 @@ class JobController extends Controller
 
         return redirect('/jobs/' . $job->id);
     }
+
+    // ================================================
 
 
     public function destroy(Job $job)

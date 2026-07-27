@@ -3,7 +3,9 @@
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\RegisterdUserController;
 use App\Http\Controllers\SessionController;
+
 use App\Models\Job;
+
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home');

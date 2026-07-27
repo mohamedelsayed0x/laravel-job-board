@@ -8,3 +8,6 @@ function addNumbers(float $a, float $b): int
   return (int)($a + $b);
 }
 var_dump(addNumbers(1.2, 5.2));
+
+$car = array("model" => "Ford", "model" => "Mustangsss", "model" => 1964);
+echo $car["model"];

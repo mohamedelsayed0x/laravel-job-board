@@ -8,8 +8,16 @@
 
     <p>This Job Pays {{ $job->salary }} Per Years</p>
     <br>
-    <p>
-        <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
-    </p>
+
+    {{-- if (Auth::user()->cannot('edit-job', $job)) {
+    dd('failure');
+    } --}}
+
+    @can('edit-job', $job)
+        <p>
+            <x-button href="/jobs/{{ $job->id }}/edit">Edit Job</x-button>
+        </p>
+    @endcan
+
 
 </x-layout>
